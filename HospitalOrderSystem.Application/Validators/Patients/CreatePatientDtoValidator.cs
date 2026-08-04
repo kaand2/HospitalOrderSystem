@@ -10,9 +10,9 @@ namespace HospitalOrderSystem.Application.Validators.Patients
             RuleFor(patient => patient.TcNo)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
-                .WithMessage("TC Kimlik Numarası zorunludur.")
+                .WithMessage("TC Kimlik numarası zorunludur.")
                 .Matches(@"^\d{11}$")
-                .WithMessage("TC Kimlik Numarası 11 rakamdan oluşmalıdır.");
+                .WithMessage("TC Kimlik numarası 11 rakamdan oluşmalıdır.");
             RuleFor(patient => patient.FirstName)
                 .NotEmpty()
                 .WithMessage("Hasta adı zorunludur.");

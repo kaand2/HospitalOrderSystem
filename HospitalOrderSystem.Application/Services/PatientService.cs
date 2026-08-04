@@ -40,7 +40,7 @@ namespace HospitalOrderSystem.Application.Services
             bool tcNoExists = await _patientRepository.TcNoExistsAsync(normalizedTcNo);
             if (tcNoExists)
             {
-                throw new InvalidOperationException("Bu TC Kimlik Numarası ile kayıtlı bir hasta zaten bulunmaktadır.");
+                throw new InvalidOperationException("Bu TC Kimlik numarası ile kayıtlı bir hasta zaten bulunmaktadır.");
             }
             Patient patient = _mapper.Map<Patient>(createPatientDto);
             patient.TcNo = normalizedTcNo;
@@ -63,7 +63,7 @@ namespace HospitalOrderSystem.Application.Services
             bool tcNoExists = await _patientRepository.TcNoExistsAsync(normalizedTcNo, id);
             if (tcNoExists)
             {
-                throw new InvalidOperationException("Bu TC Kimlik Numarası başka bir hastaya aittir.");
+                throw new InvalidOperationException("Bu TC Kimlik numarası başka bir hastaya aittir.");
             }
             _mapper.Map(updatePatientDto, patient);
             patient.TcNo = normalizedTcNo;

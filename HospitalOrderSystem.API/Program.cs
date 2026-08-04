@@ -1,6 +1,8 @@
-using HospitalOrderSystem.Persistence.Context;
-using Microsoft.EntityFrameworkCore;
 using HospitalOrderSystem.Application;
+using HospitalOrderSystem.Application.Interfaces.Repositories;
+using HospitalOrderSystem.Persistence.Context;
+using HospitalOrderSystem.Persistence.Repositories;
+using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -11,6 +13,7 @@ builder.Services.AddSwaggerGen();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Couldn't connect.");
 builder.Services.AddDbContext<ProjectDbContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 builder.Services.AddApplicationServices();
 var app = builder.Build();
 
@@ -22,9 +25,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
