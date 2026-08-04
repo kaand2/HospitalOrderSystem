@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="HospitalOrderSystem.API/HospitalOrderSystem.API.csproj" />
+  <Project Path="HospitalOrderSystem.Application/HospitalOrderSystem.Application.csproj" />
+  <Project Path="HospitalOrderSystem.Domain/HospitalOrderSystem.Domain.csproj" />
+  <Project Path="HospitalOrderSystem.Infrastructure/HospitalOrderSystem.Infrastructure.csproj" />
+  <Project Path="HospitalOrderSystem.Persistence/HospitalOrderSystem.Persistence.csproj" />
+  <Project Path="HospitalOrderSystem.Tests/HospitalOrderSystem.Tests.csproj" />
+</Solution>
