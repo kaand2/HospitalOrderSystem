@@ -37,7 +37,7 @@ namespace HospitalOrderSystem.API.Controllers
                 await _userService.GetByIdAsync(id);
             return Ok(user);
         }
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<UserDto>> Create(
             [FromBody] CreateUserDto createUserDto)

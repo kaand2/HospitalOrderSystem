@@ -16,6 +16,7 @@ namespace HospitalOrderSystem.Application.Interfaces.Repositories
         Task AddAsync(User user);
         void Update(User user);
         void Delete(User user);
+        Task<bool> AdminExistsAsync();
         Task<int> SaveChangesAsync();
     }
 }

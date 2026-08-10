@@ -86,5 +86,16 @@ namespace HospitalOrderSystem.Application.Services
             _userRepository.Delete(user);
             await _userRepository.SaveChangesAsync();
         }
+        public async Task MakeAdminAsync(string username)
+        {
+            User? user = await _userRepository.GetByUsernameAsync(username);
+            if (user is null)
+            {
+                throw new KeyNotFoundException($"'{username}' adında herhangi bir kullanıcı bulunamadı.");
+            }
+            user.Role = HospitalOrderSystem.Domain.Enums.UserRole.Admin;
+            _userRepository.Update(user);
+            await _userRepository.SaveChangesAsync();
+        }
     }
 }

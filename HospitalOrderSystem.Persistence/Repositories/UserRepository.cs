@@ -59,6 +59,10 @@ public class UserRepository : IUserRepository
 
         _context.Users.Update(user);
     }
+    public async Task<bool> AdminExistsAsync()
+    {
+        return await _context.Users.AnyAsync(user => user.Role == Domain.Enums.UserRole.Admin && !user.IsDeleted);
+    }
     public async Task<int> SaveChangesAsync()
     {
         return await _context.SaveChangesAsync();

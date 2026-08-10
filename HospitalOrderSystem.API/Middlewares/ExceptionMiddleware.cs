@@ -48,7 +48,7 @@ namespace HospitalOrderSystem.API.Middlewares
                 _ => new
                 {
                     statusCode = (int)HttpStatusCode.InternalServerError,
-                    message = "Beklenmeyen bir hata oluştu."
+                    message = $"[{exception.GetType().Name}] {exception.Message}"
                 }
             };
 

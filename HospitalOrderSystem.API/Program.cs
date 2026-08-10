@@ -82,25 +82,6 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<ProjectDbContext>();
     context.Database.Migrate();
-
-    var passwordHasher = services.GetRequiredService<Microsoft.AspNetCore.Identity.IPasswordHasher<HospitalOrderSystem.Domain.Entities.User>>();
-    var adminUser = context.Users.FirstOrDefault(u => u.Username == "admin");
-    
-    if (adminUser == null)
-    {
-        adminUser = new HospitalOrderSystem.Domain.Entities.User
-        {
-            FirstName = "System",
-            LastName = "Admin",
-            Username = "admin",
-            Role = HospitalOrderSystem.Domain.Enums.UserRole.Admin,
-            CreatedDate = DateTime.UtcNow,
-            IsDeleted = false
-        };
-        adminUser.PasswordHash = passwordHasher.HashPassword(adminUser, "String123!");
-        context.Users.Add(adminUser);
-    }
-    context.SaveChanges();
 }
 
 app.UseMiddleware<ExceptionMiddleware>();
