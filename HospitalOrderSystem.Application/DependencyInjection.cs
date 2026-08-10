@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +9,8 @@ using HospitalOrderSystem.Application.Services;
 using HospitalOrderSystem.Application.Validators.Patients;
 using Microsoft.Extensions.DependencyInjection;
 using HospitalOrderSystem.Application.Mappings;
+using HospitalOrderSystem.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace HospitalOrderSystem.Application
 {
@@ -18,8 +20,13 @@ namespace HospitalOrderSystem.Application
             this IServiceCollection services)
         {
             services.AddScoped<IPatientService, PatientService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IOrderActionService, OrderActionService>();
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
             services.AddValidatorsFromAssemblyContaining<CreatePatientDtoValidator>();
-            services.AddAutoMapper(configuration => { }, typeof(PatientMappingProfile));
+            services.AddAutoMapper(configuration => { }, typeof(PatientMappingProfile), typeof(UserMappingProfile), typeof(OrderMappingProfile), typeof(OrderActionMappingProfile));
             return services;
         }
     }

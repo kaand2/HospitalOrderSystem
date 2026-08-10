@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.19">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
@@ -16,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HospitalOrderSystem.Persistence\HospitalOrderSystem.Persistence.csproj" />
+    <ProjectReference Include="..\HospitalOrderSystem.Infrastructure\HospitalOrderSystem.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

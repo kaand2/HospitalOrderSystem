@@ -1,10 +1,12 @@
-﻿using FluentValidation;
+using FluentValidation;
 using HospitalOrderSystem.Application.DTOs.Patients;
 using HospitalOrderSystem.Application.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalOrderSystem.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class PatientsController : ControllerBase
@@ -31,19 +33,9 @@ namespace HospitalOrderSystem.API.Controllers
         [HttpGet("{id:int}")]
         public async Task<ActionResult<PatientDto>> GetById(int id)
         {
-            try
-            {
-                PatientDto patient =
-                    await _patientService.GetByIdAsync(id);
-                return Ok(patient);
-            }
-            catch (KeyNotFoundException exception)
-            {
-                return NotFound(new
-                {
-                    message = exception.Message
-                });
-            }
+            PatientDto patient =
+                await _patientService.GetByIdAsync(id);
+            return Ok(patient);
         }
         [HttpPost]
         public async Task<ActionResult<PatientDto>> Create(
@@ -66,23 +58,13 @@ namespace HospitalOrderSystem.API.Controllers
                     errors
                 });
             }
-            try
-            {
-                PatientDto createdPatient =
-                    await _patientService.CreateAsync(createPatientDto);
+            PatientDto createdPatient =
+                await _patientService.CreateAsync(createPatientDto);
 
-                return CreatedAtAction(
-                    nameof(GetById),
-                    new { id = createdPatient.Id },
-                    createdPatient);
-            }
-            catch (InvalidOperationException exception)
-            {
-                return BadRequest(new
-                {
-                    message = exception.Message
-                });
-            }
+            return CreatedAtAction(
+                nameof(GetById),
+                new { id = createdPatient.Id },
+                createdPatient);
         }
         [HttpPut("{id:int}")]
         public async Task<ActionResult<PatientDto>> Update(
@@ -106,49 +88,22 @@ namespace HospitalOrderSystem.API.Controllers
                     errors
                 });
             }
-            try
-            {
-                PatientDto updatedPatient =
-                    await _patientService.UpdateAsync(
-                        id,
-                        updatePatientDto);
+            PatientDto updatedPatient =
+                await _patientService.UpdateAsync(
+                    id,
+                    updatePatientDto);
 
-                return Ok(updatedPatient);
-            }
-            catch (KeyNotFoundException exception)
-            {
-                return NotFound(new
-                {
-                    message = exception.Message
-                });
-            }
-            catch (InvalidOperationException exception)
-            {
-                return BadRequest(new
-                {
-                    message = exception.Message
-                });
-            }
+            return Ok(updatedPatient);
         }
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
-            try
-            {
-                await _patientService.DeleteAsync(id);
+            await _patientService.DeleteAsync(id);
 
-                return Ok(new
-                {
-                    message = "Hasta silindi."
-                });
-            }
-            catch (KeyNotFoundException exception)
+            return Ok(new
             {
-                return NotFound(new
-                {
-                    message = exception.Message
-                });
-            }
+                message = "Hasta silindi."
+            });
         }
     }
 }

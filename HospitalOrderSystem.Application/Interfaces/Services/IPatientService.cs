@@ -12,7 +12,7 @@ namespace HospitalOrderSystem.Application.Interfaces.Services
         Task<List<PatientDto>> GetAllAsync();
         Task<PatientDto> GetByIdAsync(int id);
         Task<PatientDto> CreateAsync(CreatePatientDto createPatientDto);
-        Task<PatientDto> UpdateAsync( int id, UpdatePatientDto updatePatientDto);
+        Task<PatientDto> UpdateAsync(int id, UpdatePatientDto updatePatientDto);
         Task DeleteAsync(int id);
     }
 }

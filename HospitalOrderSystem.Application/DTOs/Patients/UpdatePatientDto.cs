@@ -16,7 +16,7 @@ namespace HospitalOrderSystem.Application.DTOs.Patients
         public Gender Gender { get; set; }
         public string? Phone { get; set; }
         public string? Email { get; set; }
-        public DateTime? UpcomingApp { get; set; }
+        public DateTime? UpcomingAppointment { get; set; }
         public InsuranceType? InsuranceType { get; set; }
     }
 }

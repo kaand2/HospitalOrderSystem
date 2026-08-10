@@ -13,7 +13,7 @@ public class PatientDto
     public Gender Gender { get; set; }
     public string? Phone { get; set; }
     public string? Email { get; set; }
-    public DateTime? UpcomingApp { get; set; }
+    public DateTime? UpcomingAppointment { get; set; }
     public InsuranceType? InsuranceType { get; set; }
     public DateTime CreatedDate { get; set; }
 }

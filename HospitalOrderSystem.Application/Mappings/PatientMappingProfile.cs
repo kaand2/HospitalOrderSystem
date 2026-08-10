@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HospitalOrderSystem.Application.Mappings
 {
-    public class PatientMappingProfile: Profile
+    public class PatientMappingProfile : Profile
     {
         public PatientMappingProfile()
         {

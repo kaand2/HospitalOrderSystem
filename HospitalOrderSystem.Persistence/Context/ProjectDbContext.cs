@@ -35,6 +35,26 @@ public class ProjectDbContext : DbContext
                 .IsRequired();
         });
 
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.HasKey(user => user.Id);
+
+            entity.HasIndex(user => user.Username)
+                .IsUnique();
+
+            entity.Property(user => user.Username)
+                .IsRequired();
+
+            entity.Property(user => user.PasswordHash)
+                .IsRequired();
+
+            entity.Property(user => user.FirstName)
+                .IsRequired();
+
+            entity.Property(user => user.LastName)
+                .IsRequired();
+        });
+
         modelBuilder.Entity<Order>(entity =>
         {
             entity.HasKey(order => order.Id);
