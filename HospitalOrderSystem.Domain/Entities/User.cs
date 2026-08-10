@@ -10,9 +10,10 @@ namespace HospitalOrderSystem.Domain.Entities
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public UserRole Role { get; set; }
-        public bool IsActive { get; set; } = true;
+        public bool IsDeleted { get; set; } = false;
         public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedDate { get; set; }
+        public DateTime? DeletedDate { get; set; }
         public ICollection<Order> CreatedOrders { get; set; } = new List<Order>();
         public ICollection<OrderAction> Actions { get; set; } = new List<OrderAction>();
     }
