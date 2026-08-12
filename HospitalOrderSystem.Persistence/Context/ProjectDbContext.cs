@@ -5,9 +5,7 @@ namespace HospitalOrderSystem.Persistence.Context;
 
 public class ProjectDbContext : DbContext
 {
-    public ProjectDbContext(DbContextOptions<ProjectDbContext> options) : base(options)
-    {
-    }
+    public ProjectDbContext(DbContextOptions<ProjectDbContext> options) : base(options) { }
     public DbSet<Patient> Patients { get; set; } = null!;
     public DbSet<User> Users { get; set; } = null!;
     public DbSet<Order> Orders { get; set; } = null!;

@@ -8,7 +8,6 @@ namespace HospitalOrderSystem.Application.Validators.Patients
         public UpdatePatientDtoValidator()
         {
             RuleFor(patient => patient.TcNo)
-                .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .WithMessage("TC Kimlik numarası zorunludur.")
                 .Matches(@"^\d{11}$")

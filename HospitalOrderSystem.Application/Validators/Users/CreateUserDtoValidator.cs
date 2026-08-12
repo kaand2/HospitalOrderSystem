@@ -18,8 +18,8 @@ namespace HospitalOrderSystem.Application.Validators.Users
             RuleFor(user => user.Password)
                 .NotEmpty()
                 .WithMessage("Şifre zorunludur.")
-                .MinimumLength(6)
-                .WithMessage("Şifre en az 6 karakter olmalıdır.");
+                .MinimumLength(8)
+                .WithMessage("Şifre en az 8 karakter olmalıdır.");
             RuleFor(user => user.FirstName)
                 .NotEmpty()
                 .WithMessage("Ad zorunludur.");

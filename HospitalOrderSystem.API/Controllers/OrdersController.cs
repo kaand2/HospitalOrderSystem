@@ -69,6 +69,7 @@ namespace HospitalOrderSystem.API.Controllers
                 createdOrder);
         }
 
+        [Authorize(Roles = "Doctor,Admin")]
         [HttpPut("{id:int}")]
         public async Task<ActionResult<OrderDto>> Update(
             int id,
@@ -99,6 +100,7 @@ namespace HospitalOrderSystem.API.Controllers
             return Ok(updatedOrder);
         }
 
+        [Authorize(Roles = "Doctor,Admin")]
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {

@@ -123,9 +123,11 @@ namespace HospitalOrderSystem.Application.Services
         {
             bool isValid = from switch
             {
-                OrderStatus.Draft => to == OrderStatus.Pending || to == OrderStatus.Cancelled,
-                OrderStatus.Pending => to == OrderStatus.Approved || to == OrderStatus.Cancelled,
-                OrderStatus.Approved => to == OrderStatus.Completed || to == OrderStatus.Cancelled,
+                OrderStatus.Draft => to == OrderStatus.Active || to == OrderStatus.Cancelled,
+                OrderStatus.Active => to == OrderStatus.InProgress || to == OrderStatus.Paused || to == OrderStatus.Cancelled,
+                OrderStatus.InProgress => to == OrderStatus.Completed || to == OrderStatus.Cancelled,
+                OrderStatus.Paused => to == OrderStatus.Restarted || to == OrderStatus.Cancelled,
+                OrderStatus.Restarted => to == OrderStatus.Active,
                 OrderStatus.Completed => false,
                 OrderStatus.Cancelled => false,
                 _ => false

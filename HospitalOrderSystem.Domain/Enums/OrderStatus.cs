@@ -7,9 +7,11 @@ namespace HospitalOrderSystem.Domain.Enums
     public enum OrderStatus
     {
         Draft = 1,
-        Pending = 3,
-        Approved = 4,
+        Active = 3,
+        InProgress = 4,
         Completed = 5,
-        Cancelled = 6
+        Cancelled = 6,
+        Paused = 7,
+        Restarted = 8
     }
 }

@@ -37,6 +37,7 @@ namespace HospitalOrderSystem.API.Controllers
                 await _patientService.GetByIdAsync(id);
             return Ok(patient);
         }
+        [Authorize(Roles = "Doctor,Admin,Nurse")]
         [HttpPost]
         public async Task<ActionResult<PatientDto>> Create(
             [FromBody] CreatePatientDto createPatientDto)
@@ -66,6 +67,7 @@ namespace HospitalOrderSystem.API.Controllers
                 new { id = createdPatient.Id },
                 createdPatient);
         }
+        [Authorize(Roles = "Doctor,Admin,Nurse")]
         [HttpPut("{id:int}")]
         public async Task<ActionResult<PatientDto>> Update(
             int id,
@@ -95,6 +97,7 @@ namespace HospitalOrderSystem.API.Controllers
 
             return Ok(updatedPatient);
         }
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {

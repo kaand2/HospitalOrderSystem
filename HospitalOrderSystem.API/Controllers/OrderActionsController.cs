@@ -43,6 +43,7 @@ namespace HospitalOrderSystem.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin,Doctor")]
         public async Task<ActionResult<OrderActionDto>> Create(
             [FromBody] CreateOrderActionDto createDto)
         {
