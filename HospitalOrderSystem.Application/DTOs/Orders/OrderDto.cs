@@ -17,6 +17,7 @@ namespace HospitalOrderSystem.Application.DTOs.Orders
         public DateTime? CompletedDate { get; set; }
         public DateTime? CancelledDate { get; set; }
         public string? CancellationReason { get; set; }
+        public bool IsCancelled { get; set; }
         public bool IsDeleted { get; set; }
     }
 }

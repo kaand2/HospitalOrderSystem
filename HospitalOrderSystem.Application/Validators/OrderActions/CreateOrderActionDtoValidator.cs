@@ -9,7 +9,7 @@ namespace HospitalOrderSystem.Application.Validators.OrderActions
         {
             RuleFor(action => action.OrderId)
                 .GreaterThan(0)
-                .WithMessage("Geçerli bir sipariş seçilmelidir.");
+                .WithMessage("Geçerli bir order seçilmelidir.");
 
             RuleFor(action => action.UserId)
                 .GreaterThan(0)

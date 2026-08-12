@@ -76,6 +76,7 @@ namespace HospitalOrderSystem.Persistence.Migrations
                     CompletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CancelledDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CancellationReason = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsCancelled = table.Column<bool>(type: "bit", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>

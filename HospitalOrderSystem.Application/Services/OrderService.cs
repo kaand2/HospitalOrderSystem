@@ -26,19 +26,26 @@ namespace HospitalOrderSystem.Application.Services
             _mapper = mapper;
         }
 
-        public async Task<List<OrderDto>> GetAllAsync()
+        public async Task<List<OrderDto>> GetAllAsync(string userRole)
         {
             List<Order> orders = await _orderRepository.GetAllAsync();
-            return _mapper.Map<List<OrderDto>>(orders);
+            var filteredOrders = orders.Where(o => IsAuthorizedForOrderType(userRole, o.OrderType)).ToList();
+            return _mapper.Map<List<OrderDto>>(filteredOrders);
         }
 
-        public async Task<OrderDto> GetByIdAsync(int id)
+        public async Task<OrderDto> GetByIdAsync(int id, string userRole)
         {
             Order? order = await _orderRepository.GetByIdAsync(id);
             if (order is null)
             {
-                throw new KeyNotFoundException($"Id değeri {id} olan sipariş bulunamadı.");
+                throw new KeyNotFoundException($"Id değeri {id} olan order bulunamadı.");
             }
+
+            if (!IsAuthorizedForOrderType(userRole, order.OrderType))
+            {
+                throw new UnauthorizedAccessException("Bu departmanın siparişlerini görüntüleme yetkiniz yok.");
+            }
+
             return _mapper.Map<OrderDto>(order);
         }
 
@@ -63,6 +70,7 @@ namespace HospitalOrderSystem.Application.Services
             order.CompletedDate = null;
             order.CancelledDate = null;
             order.CancellationReason = null;
+            order.IsCancelled = false;
             order.Status = OrderStatus.Draft;
 
             await _orderRepository.AddAsync(order);
@@ -76,7 +84,7 @@ namespace HospitalOrderSystem.Application.Services
             Order? order = await _orderRepository.GetByIdAsync(id);
             if (order is null)
             {
-                throw new KeyNotFoundException($"Id değeri {id} olan sipariş bulunamadı.");
+                throw new KeyNotFoundException($"Id değeri {id} olan order bulunamadı.");
             }
 
             OrderStatus previousStatus = order.Status;
@@ -107,12 +115,34 @@ namespace HospitalOrderSystem.Application.Services
             return _mapper.Map<OrderDto>(order);
         }
 
+        public async Task<OrderDto> CancelAsync(int id, CancelOrderDto cancelOrderDto)
+        {
+            Order? order = await _orderRepository.GetByIdAsync(id);
+            if (order is null)
+            {
+                throw new KeyNotFoundException($"Id değeri {id} olan order bulunamadı.");
+            }
+
+            OrderStatus previousStatus = order.Status;
+            ValidateStatusTransition(previousStatus, OrderStatus.Cancelled);
+
+            order.Status = OrderStatus.Cancelled;
+            order.CancellationReason = cancelOrderDto.CancellationReason;
+            order.CancelledDate = DateTime.UtcNow;
+            order.IsCancelled = true;
+
+            _orderRepository.Update(order);
+            await _orderRepository.SaveChangesAsync();
+
+            return _mapper.Map<OrderDto>(order);
+        }
+
         public async Task DeleteAsync(int id)
         {
             Order? order = await _orderRepository.GetByIdAsync(id);
             if (order is null)
             {
-                throw new KeyNotFoundException($"Id değeri {id} olan sipariş bulunamadı.");
+                throw new KeyNotFoundException($"Id değeri {id} olan order bulunamadı.");
             }
 
             _orderRepository.Delete(order);
@@ -136,8 +166,33 @@ namespace HospitalOrderSystem.Application.Services
             if (!isValid)
             {
                 throw new InvalidOperationException(
-                    $"Sipariş durumu '{from}' iken '{to}' durumuna geçiş yapılamaz.");
+                    $"order durumu '{from}' iken '{to}' durumuna geçiş yapılamaz.");
             }
+        }
+
+        private static bool IsAuthorizedForOrderType(string userRole, OrderType orderType)
+        {
+            if (userRole == "Admin" || userRole == "Doctor")
+            {
+                return true;
+            }
+
+            if (userRole == "Nurse")
+            {
+                return orderType == OrderType.Nursing || orderType == OrderType.Medication || orderType == OrderType.Diet;
+            }
+
+            if (userRole == "Laboratory")
+            {
+                return orderType == OrderType.Laboratory;
+            }
+
+            if (userRole == "Radiology")
+            {
+                return orderType == OrderType.Radiology;
+            }
+
+            return false;
         }
     }
 }

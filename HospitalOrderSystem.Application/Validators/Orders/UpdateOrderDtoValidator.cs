@@ -9,7 +9,7 @@ namespace HospitalOrderSystem.Application.Validators.Orders
         {
             RuleFor(order => order.OrderType)
                 .IsInEnum()
-                .WithMessage("Geçerli bir sipariş türü seçilmelidir.");
+                .WithMessage("Geçerli bir order türü seçilmelidir.");
 
             RuleFor(order => order.Status)
                 .IsInEnum()

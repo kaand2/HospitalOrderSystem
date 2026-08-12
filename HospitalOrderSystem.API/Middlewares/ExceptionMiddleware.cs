@@ -45,6 +45,11 @@ namespace HospitalOrderSystem.API.Middlewares
                     statusCode = (int)HttpStatusCode.BadRequest,
                     message = exception.Message
                 },
+                UnauthorizedAccessException => new
+                {
+                    statusCode = (int)HttpStatusCode.Forbidden,
+                    message = exception.Message
+                },
                 _ => new
                 {
                     statusCode = (int)HttpStatusCode.InternalServerError,

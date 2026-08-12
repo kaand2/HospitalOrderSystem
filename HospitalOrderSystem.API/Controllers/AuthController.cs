@@ -36,7 +36,6 @@ namespace HospitalOrderSystem.API.Controllers
         {
             var result =
                 await _authService.CreateInitialAdminAsync(dto);
-
             return Created("", result);
         }
     }

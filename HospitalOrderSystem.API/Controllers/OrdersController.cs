@@ -3,6 +3,7 @@ using HospitalOrderSystem.Application.DTOs.Orders;
 using HospitalOrderSystem.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace HospitalOrderSystem.API.Controllers
 {
@@ -14,27 +15,32 @@ namespace HospitalOrderSystem.API.Controllers
         private readonly IOrderService _orderService;
         private readonly IValidator<CreateOrderDto> _createOrderValidator;
         private readonly IValidator<UpdateOrderDto> _updateOrderValidator;
+        private readonly IValidator<CancelOrderDto> _cancelOrderValidator;
 
         public OrdersController(IOrderService orderService,
             IValidator<CreateOrderDto> createOrderValidator,
-            IValidator<UpdateOrderDto> updateOrderValidator)
+            IValidator<UpdateOrderDto> updateOrderValidator,
+            IValidator<CancelOrderDto> cancelOrderValidator)
         {
             _orderService = orderService;
             _createOrderValidator = createOrderValidator;
             _updateOrderValidator = updateOrderValidator;
+            _cancelOrderValidator = cancelOrderValidator;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<OrderDto>>> GetAll()
         {
-            List<OrderDto> orders = await _orderService.GetAllAsync();
+            var userRole = User.FindFirst(ClaimTypes.Role)?.Value ?? string.Empty;
+            List<OrderDto> orders = await _orderService.GetAllAsync(userRole);
             return Ok(orders);
         }
 
         [HttpGet("{id:int}")]
         public async Task<ActionResult<OrderDto>> GetById(int id)
         {
-            OrderDto order = await _orderService.GetByIdAsync(id);
+            var userRole = User.FindFirst(ClaimTypes.Role)?.Value ?? string.Empty;
+            OrderDto order = await _orderService.GetByIdAsync(id, userRole);
             return Ok(order);
         }
 
@@ -101,6 +107,31 @@ namespace HospitalOrderSystem.API.Controllers
         }
 
         [Authorize(Roles = "Doctor,Admin")]
+        [HttpPut("{id:int}/cancel")]
+        public async Task<ActionResult<OrderDto>> Cancel(
+            int id,
+            [FromBody] CancelOrderDto cancelOrderDto)
+        {
+            var validationResult =
+                await _cancelOrderValidator.ValidateAsync(cancelOrderDto);
+            if (!validationResult.IsValid)
+            {
+                var errors = validationResult.Errors
+                    .GroupBy(error => error.PropertyName)
+                    .ToDictionary(
+                        group => group.Key,
+                        group => group
+                            .Select(error => error.ErrorMessage)
+                            .ToArray());
+
+                return BadRequest(new { errors });
+            }
+
+            OrderDto cancelledOrder = await _orderService.CancelAsync(id, cancelOrderDto);
+            return Ok(cancelledOrder);
+        }
+
+        [Authorize(Roles = "Doctor,Admin")]
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -108,7 +139,7 @@ namespace HospitalOrderSystem.API.Controllers
 
             return Ok(new
             {
-                message = "Sipariş silindi."
+                message = "Order silindi."
             });
         }
     }

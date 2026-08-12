@@ -20,6 +20,7 @@ namespace HospitalOrderSystem.Domain.Entities
         public DateTime? CompletedDate { get; set; }
         public DateTime? CancelledDate { get; set; }
         public string? CancellationReason { get; set; }
+        public bool IsCancelled { get; set; } = false;
         public bool IsDeleted { get; set; } = false;
         public Patient Patient { get; set; } = null!;
         public User CreatedByUser { get; set; } = null!;

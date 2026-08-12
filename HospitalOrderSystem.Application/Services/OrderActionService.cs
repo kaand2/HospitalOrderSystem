@@ -52,7 +52,7 @@ namespace HospitalOrderSystem.Application.Services
             Order? order = await _orderRepository.GetByIdAsync(createDto.OrderId);
             if (order is null)
             {
-                throw new KeyNotFoundException($"Id değeri {createDto.OrderId} olan sipariş bulunamadı.");
+                throw new KeyNotFoundException($"Id değeri {createDto.OrderId} olan order bulunamadı.");
             }
 
             User? user = await _userRepository.GetByIdAsync(createDto.UserId);
