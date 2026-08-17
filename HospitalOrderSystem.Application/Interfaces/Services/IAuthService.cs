@@ -6,6 +6,6 @@ namespace HospitalOrderSystem.Application.Interfaces.Services
     public interface IAuthService
     {
         Task<LoginResponseDto?> LoginAsync(LoginDto dto);
-        Task<UserDto> CreateInitialAdminAsync(CreateInitialAdminDto dto);
+        Task SeedInitialAdminAsync(string username, string password, string firstName, string lastName);
     }
 }

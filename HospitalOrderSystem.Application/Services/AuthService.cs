@@ -50,43 +50,34 @@ namespace HospitalOrderSystem.Application.Services
                 Expiration = DateTime.UtcNow.AddMinutes(60)
             };
         }
-        public async Task<UserDto> CreateInitialAdminAsync(CreateInitialAdminDto dto)
+
+        public async Task SeedInitialAdminAsync(
+            string username, string password, string firstName, string lastName)
         {
             var adminExists = await _userRepository.AdminExistsAsync();
             if (adminExists)
-            {
-                throw new InvalidOperationException("Initial admin zaten oluşturulmuş.");
-            }
-            string normalizedUsername = dto.Username.Trim();
+                return;
+
+            string normalizedUsername = username.Trim();
             bool usernameExists = await _userRepository.UsernameExistsAsync(normalizedUsername);
             if (usernameExists)
-            {
-                throw new InvalidOperationException("Bu kullanıcı adı alınmıştır.");
-            }
+                return;
+
             var user = new User
             {
                 Username = normalizedUsername,
-                FirstName = dto.FirstName,
-                LastName = dto.LastName,
+                FirstName = firstName,
+                LastName = lastName,
                 Role = UserRole.Admin,
                 IsDeleted = false,
                 CreatedDate = DateTime.UtcNow,
                 UpdatedDate = null,
                 DeletedDate = null
             };
-            user.PasswordHash = _passwordHasher.HashPassword(user, dto.Password);
+            user.PasswordHash = _passwordHasher.HashPassword(user, password);
+
             await _userRepository.AddAsync(user);
             await _userRepository.SaveChangesAsync();
-            return new UserDto
-            {
-                Id = user.Id,
-                Username = user.Username,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Role = user.Role,
-                IsDeleted = user.IsDeleted,
-                CreatedDate = user.CreatedDate
-            };
         }
     }
 }

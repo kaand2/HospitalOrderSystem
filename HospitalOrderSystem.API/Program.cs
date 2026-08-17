@@ -1,5 +1,6 @@
 using HospitalOrderSystem.Application;
 using HospitalOrderSystem.Application.Interfaces.Repositories;
+using HospitalOrderSystem.Application.Interfaces.Services;
 using HospitalOrderSystem.Persistence.Context;
 using HospitalOrderSystem.Persistence.Repositories;
 using HospitalOrderSystem.API.Middlewares;
@@ -82,7 +83,16 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<ProjectDbContext>();
     context.Database.Migrate();
+
+    var adminConfig = app.Configuration.GetSection("InitialAdmin");
+    var authService = services.GetRequiredService<IAuthService>();
+    await authService.SeedInitialAdminAsync(
+        adminConfig["Username"] ?? "admin",
+        adminConfig["Password"] ?? "String123!",
+        adminConfig["FirstName"] ?? "Kaan",
+        adminConfig["LastName"] ?? "Doğan");
 }
+
 
 app.UseMiddleware<ExceptionMiddleware>();
 

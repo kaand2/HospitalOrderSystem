@@ -29,15 +29,5 @@ namespace HospitalOrderSystem.API.Controllers
 
             return Ok(result);
         }
-        [AllowAnonymous]
-        [HttpPost("bootstrap-admin")]
-        public async Task<IActionResult> CreateInitialAdmin(
-            CreateInitialAdminDto dto)
-        {
-            var result =
-                await _authService.CreateInitialAdminAsync(dto);
-            return Created("", result);
-        }
     }
 }
-
