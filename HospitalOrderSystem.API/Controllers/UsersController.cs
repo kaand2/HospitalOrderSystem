@@ -38,6 +38,16 @@ namespace HospitalOrderSystem.API.Controllers
             return Ok(user);
         }
         [Authorize(Roles = "Admin")]
+        [HttpGet("search")]
+        public async Task<ActionResult<List<UserDto>>> Search(
+            [FromQuery] string? firstName,
+            [FromQuery] string? lastName)
+        {
+            List<UserDto> users =
+                await _userService.SearchAsync(firstName, lastName);
+            return Ok(users);
+        }
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<UserDto>> Create(
             [FromBody] CreateUserDto createUserDto)

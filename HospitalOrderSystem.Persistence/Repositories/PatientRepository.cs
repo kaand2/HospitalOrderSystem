@@ -1,4 +1,4 @@
-﻿using HospitalOrderSystem.Application.Interfaces.Repositories;
+using HospitalOrderSystem.Application.Interfaces.Repositories;
 using HospitalOrderSystem.Domain.Entities;
 using HospitalOrderSystem.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
@@ -36,6 +36,24 @@ public class PatientRepository : IPatientRepository
             .FirstOrDefaultAsync(patient =>
                 patient.TcNo == tcNo &&
                 !patient.IsDeleted);
+    }
+    public async Task<List<Patient>> SearchAsync(string? firstName, string? lastName, string? tcNo)
+    {
+        var query = _context.Patients.Where(patient => !patient.IsDeleted);
+
+        if (!string.IsNullOrWhiteSpace(firstName))
+            query = query.Where(patient =>
+                patient.FirstName.ToLower().Contains(firstName.Trim().ToLower()));
+
+        if (!string.IsNullOrWhiteSpace(lastName))
+            query = query.Where(patient =>
+                patient.LastName.ToLower().Contains(lastName.Trim().ToLower()));
+
+        if (!string.IsNullOrWhiteSpace(tcNo))
+            query = query.Where(patient =>
+                patient.TcNo == tcNo.Trim());
+
+        return await query.ToListAsync();
     }
     public async Task<bool> TcNoExistsAsync(string tcNo, int? excludedPatientId = null)
     {

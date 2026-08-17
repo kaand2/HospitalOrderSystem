@@ -37,6 +37,16 @@ namespace HospitalOrderSystem.API.Controllers
                 await _patientService.GetByIdAsync(id);
             return Ok(patient);
         }
+        [HttpGet("search")]
+        public async Task<ActionResult<List<PatientDto>>> Search(
+            [FromQuery] string? firstName,
+            [FromQuery] string? lastName,
+            [FromQuery] string? tcNo)
+        {
+            List<PatientDto> patients =
+                await _patientService.SearchAsync(firstName, lastName, tcNo);
+            return Ok(patients);
+        }
         [Authorize(Roles = "Doctor,Admin,Nurse")]
         [HttpPost]
         public async Task<ActionResult<PatientDto>> Create(

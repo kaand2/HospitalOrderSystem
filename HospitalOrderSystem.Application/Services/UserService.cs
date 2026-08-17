@@ -37,6 +37,11 @@ namespace HospitalOrderSystem.Application.Services
             }
             return _mapper.Map<UserDto>(user);
         }
+        public async Task<List<UserDto>> SearchAsync(string? firstName, string? lastName)
+        {
+            List<User> users = await _userRepository.SearchAsync(firstName, lastName);
+            return _mapper.Map<List<UserDto>>(users);
+        }
         public async Task<UserDto> CreateAsync(CreateUserDto createUserDto)
         {
             string normalizedUsername = createUserDto.Username.Trim();
@@ -67,7 +72,7 @@ namespace HospitalOrderSystem.Application.Services
             bool usernameExists = await _userRepository.UsernameExistsAsync(normalizedUsername, id);
             if (usernameExists)
             {
-                throw new InvalidOperationException("Bu kullanıcı adı başka bir kullanıcıya aittir.");
+                throw new InvalidOperationException("Bu kullanıcı adı ile kayıtlı bir kullanıcı zaten bulunmaktadır.");
             }
             _mapper.Map(updateUserDto, user);
             user.Username = normalizedUsername;

@@ -43,10 +43,30 @@ namespace HospitalOrderSystem.Application.Services
 
             if (!IsAuthorizedForOrderType(userRole, order.OrderType))
             {
-                throw new UnauthorizedAccessException("Bu departmanın siparişlerini görüntüleme yetkiniz yok.");
+                throw new UnauthorizedAccessException
+                ("Bu departmanın orderlarına erişiminiz yok.");
             }
 
             return _mapper.Map<OrderDto>(order);
+        }
+
+        public async Task<List<OrderDto>> SearchAsync(
+            string userRole,
+            string? patientFirstName,
+            string? patientLastName,
+            string? patientTcNo,
+            string? doctorFirstName,
+            string? doctorLastName)
+        {
+            List<Order> orders = await _orderRepository.SearchAsync(
+                patientFirstName, patientLastName, patientTcNo,
+                doctorFirstName, doctorLastName);
+
+            var filteredOrders = orders
+                .Where(o => IsAuthorizedForOrderType(userRole, o.OrderType))
+                .ToList();
+
+            return _mapper.Map<List<OrderDto>>(filteredOrders);
         }
 
         public async Task<OrderDto> CreateAsync(CreateOrderDto createOrderDto)

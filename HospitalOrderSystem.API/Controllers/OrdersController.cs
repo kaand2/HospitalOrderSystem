@@ -44,6 +44,22 @@ namespace HospitalOrderSystem.API.Controllers
             return Ok(order);
         }
 
+        [HttpGet("search")]
+        public async Task<ActionResult<List<OrderDto>>> Search(
+            [FromQuery] string? patientFirstName,
+            [FromQuery] string? patientLastName,
+            [FromQuery] string? patientTcNo,
+            [FromQuery] string? doctorFirstName,
+            [FromQuery] string? doctorLastName)
+        {
+            var userRole = User.FindFirst(ClaimTypes.Role)?.Value ?? string.Empty;
+            List<OrderDto> orders = await _orderService.SearchAsync(
+                userRole,
+                patientFirstName, patientLastName, patientTcNo,
+                doctorFirstName, doctorLastName);
+            return Ok(orders);
+        }
+
         [HttpPost]
         [Authorize(Roles = "Doctor,Admin")]
         public async Task<ActionResult<OrderDto>> Create(

@@ -6,6 +6,13 @@ namespace HospitalOrderSystem.Application.Interfaces.Services
     {
         Task<List<OrderDto>> GetAllAsync(string userRole);
         Task<OrderDto> GetByIdAsync(int id, string userRole);
+        Task<List<OrderDto>> SearchAsync(
+            string userRole,
+            string? patientFirstName,
+            string? patientLastName,
+            string? patientTcNo,
+            string? doctorFirstName,
+            string? doctorLastName);
         Task<OrderDto> CreateAsync(CreateOrderDto createOrderDto);
         Task<OrderDto> UpdateAsync(int id, UpdateOrderDto updateOrderDto);
         Task<OrderDto> CancelAsync(int id, CancelOrderDto cancelOrderDto);

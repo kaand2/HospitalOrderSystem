@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using HospitalOrderSystem.Application.DTOs.Patients;
 using HospitalOrderSystem.Application.Interfaces.Services;
 using HospitalOrderSystem.Application.Interfaces.Repositories;
@@ -34,6 +34,11 @@ namespace HospitalOrderSystem.Application.Services
             }
             return _mapper.Map<PatientDto>(patient);
         }
+        public async Task<List<PatientDto>> SearchAsync(string? firstName, string? lastName, string? tcNo)
+        {
+            List<Patient> patients = await _patientRepository.SearchAsync(firstName, lastName, tcNo);
+            return _mapper.Map<List<PatientDto>>(patients);
+        }
         public async Task<PatientDto> CreateAsync(CreatePatientDto createPatientDto)
         {
             string normalizedTcNo = createPatientDto.TcNo.Trim();
@@ -63,7 +68,7 @@ namespace HospitalOrderSystem.Application.Services
             bool tcNoExists = await _patientRepository.TcNoExistsAsync(normalizedTcNo, id);
             if (tcNoExists)
             {
-                throw new InvalidOperationException("Bu TC Kimlik numarası başka bir hastaya aittir.");
+                throw new InvalidOperationException("Bu TC Kimlik numarası ile kayıtlı bir hasta zaten bulunmaktadır.");
             }
             _mapper.Map(updatePatientDto, patient);
             patient.TcNo = normalizedTcNo;

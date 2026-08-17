@@ -37,6 +37,20 @@ public class UserRepository : IUserRepository
                 user.Username == username &&
                 !user.IsDeleted);
     }
+    public async Task<List<User>> SearchAsync(string? firstName, string? lastName)
+    {
+        var query = _context.Users.Where(user => !user.IsDeleted);
+
+        if (!string.IsNullOrWhiteSpace(firstName))
+            query = query.Where(user =>
+                user.FirstName.ToLower().Contains(firstName.Trim().ToLower()));
+
+        if (!string.IsNullOrWhiteSpace(lastName))
+            query = query.Where(user =>
+                user.LastName.ToLower().Contains(lastName.Trim().ToLower()));
+
+        return await query.ToListAsync();
+    }
     public async Task<bool> UsernameExistsAsync(string username, int? excludedUserId = null)
     {
         return await _context.Users.AnyAsync(user =>
