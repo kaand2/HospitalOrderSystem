@@ -1,4 +1,4 @@
-﻿using HospitalOrderSystem.Domain.Enums;
+using HospitalOrderSystem.Domain.Enums;
 using System;
 
 namespace HospitalOrderSystem.Application.DTOs.Patients;
@@ -15,5 +15,4 @@ public class PatientDto
     public string? Email { get; set; }
     public DateTime? UpcomingAppointment { get; set; }
     public InsuranceType? InsuranceType { get; set; }
-    public DateTime CreatedDate { get; set; }
 }
