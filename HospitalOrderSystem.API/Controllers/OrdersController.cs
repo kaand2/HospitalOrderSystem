@@ -82,8 +82,15 @@ namespace HospitalOrderSystem.API.Controllers
                     errors
                 });
             }
+
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (!int.TryParse(userIdClaim, out int userId))
+            {
+                return Unauthorized(new { message = "Kullanıcı ID bulunamadı." });
+            }
+
             OrderDto createdOrder =
-                await _orderService.CreateAsync(createOrderDto);
+                await _orderService.CreateAsync(userId, createOrderDto);
 
             return CreatedAtAction(
                 nameof(GetById),

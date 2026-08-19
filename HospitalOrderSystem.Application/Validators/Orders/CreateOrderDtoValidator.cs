@@ -7,13 +7,11 @@ namespace HospitalOrderSystem.Application.Validators.Orders
     {
         public CreateOrderDtoValidator()
         {
-            RuleFor(order => order.PatientId)
-                .GreaterThan(0)
-                .WithMessage("Geçerli bir hasta seçilmelidir.");
+            RuleFor(order => order)
+                .Must(order => !string.IsNullOrWhiteSpace(order.PatientTcNo) ||
+                               (!string.IsNullOrWhiteSpace(order.PatientFirstName) && !string.IsNullOrWhiteSpace(order.PatientLastName)))
+                .WithMessage("Lütfen hastanın TC Kimlik Numarasını ya da Ad ve Soyadını giriniz.");
 
-            RuleFor(order => order.CreatedByUserId)
-                .GreaterThan(0)
-                .WithMessage("Geçerli bir kullanıcı olmalıdır.");
 
             RuleFor(order => order.OrderType)
                 .IsInEnum()

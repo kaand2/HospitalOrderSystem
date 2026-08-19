@@ -69,21 +69,38 @@ namespace HospitalOrderSystem.Application.Services
             return _mapper.Map<List<OrderDto>>(filteredOrders);
         }
 
-        public async Task<OrderDto> CreateAsync(CreateOrderDto createOrderDto)
+        public async Task<OrderDto> CreateAsync(int createdByUserId, CreateOrderDto createOrderDto)
         {
-            Patient? patient = await _patientRepository.GetByIdAsync(createOrderDto.PatientId);
-            if (patient is null)
+            Patient? patient = null;
+
+            if (!string.IsNullOrWhiteSpace(createOrderDto.PatientTcNo))
             {
-                throw new KeyNotFoundException($"Id değeri {createOrderDto.PatientId} olan hasta bulunamadı.");
+                patient = await _patientRepository.GetByTcNoAsync(createOrderDto.PatientTcNo);
+            }
+            else if (!string.IsNullOrWhiteSpace(createOrderDto.PatientFirstName) && !string.IsNullOrWhiteSpace(createOrderDto.PatientLastName))
+            {
+                var patients = await _patientRepository.SearchAsync(createOrderDto.PatientFirstName, createOrderDto.PatientLastName, null);
+                if (patients.Count > 1)
+                {
+                    throw new InvalidOperationException("Birden fazla eşleşen hasta bulundu, lütfen TC Kimlik No ile arayın.");
+                }
+                patient = patients.FirstOrDefault();
             }
 
-            User? user = await _userRepository.GetByIdAsync(createOrderDto.CreatedByUserId);
+            if (patient is null)
+            {
+                throw new KeyNotFoundException("Belirtilen bilgilere sahip hasta bulunamadı.");
+            }
+
+            User? user = await _userRepository.GetByIdAsync(createdByUserId);
             if (user is null)
             {
-                throw new KeyNotFoundException($"Id değeri {createOrderDto.CreatedByUserId} olan kullanıcı bulunamadı.");
+                throw new KeyNotFoundException($"Id değeri {createdByUserId} olan kullanıcı bulunamadı.");
             }
 
             Order order = _mapper.Map<Order>(createOrderDto);
+            order.PatientId = patient.Id;
+            order.CreatedByUserId = createdByUserId;
             order.CreatedDate = DateTime.UtcNow;
             order.IsDeleted = false;
             order.UpdatedDate = null;

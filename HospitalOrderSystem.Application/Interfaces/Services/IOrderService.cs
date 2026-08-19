@@ -13,7 +13,7 @@ namespace HospitalOrderSystem.Application.Interfaces.Services
             string? patientTcNo,
             string? doctorFirstName,
             string? doctorLastName);
-        Task<OrderDto> CreateAsync(CreateOrderDto createOrderDto);
+        Task<OrderDto> CreateAsync(int createdByUserId, CreateOrderDto createOrderDto);
         Task<OrderDto> UpdateAsync(int id, UpdateOrderDto updateOrderDto);
         Task<OrderDto> CancelAsync(int id, CancelOrderDto cancelOrderDto);
         Task DeleteAsync(int id);
