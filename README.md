@@ -1,37 +1,51 @@
 # Hospital Order System (HOS)
 
-A RESTful API built with ASP.NET Core 8 for managing hospital patients, medical orders, and user authentication. The project implements Clean Architecture principles.
+A comprehensive Full-Stack application for managing hospital patients, medical orders, and user authentication. The project consists of a RESTful API built with ASP.NET Core 8 (Clean Architecture) and a modern frontend built with React and TypeScript.
 
 ---
 
 ## Features
 
-- **Patient Management:** CRUD operations for patient records.
+### Backend
+- **Patient Management:** CRUD operations for patient records with soft delete and validation rules.
 - **Order Management:** Lifecycle management for medical orders (Laboratory, Radiology, Nursing, Medication, Diet).
-- **State Machine Logic:** Validation rules for order status transitions.
+- **State Machine Logic:** Validation rules for order status transitions (e.g., Draft -> Active -> In Progress -> Completed/Cancelled).
 - **Order Action Tracking:** Historical tracking of status changes and updates made to an order.
 - **Authentication & Authorization:** JWT-based authentication with role-based access control (Admin, Doctor, Nurse, Laboratory, Radiology).
-- **Row-Level Security:** Data access filtering based on department and role (e.g., Laboratory role accesses only Laboratory orders).
 - **Global Error Handling:** Custom exception middleware that maps exceptions to standard HTTP status codes.
+
+### Frontend
+- **Modern User Interface:** Built with React, Tailwind CSS, and shadcn/ui for a clean, responsive, and accessible design.
+- **Robust State Management:** Uses TanStack React Query for efficient data fetching, caching, and mutation state handling.
+- **Form Handling & Validation:** Integrated with React Hook Form for seamless user input and validation.
+- **Localization (i18n):** Multi-language support implemented using `react-i18next`.
+- **Type-Safe API Integration:** Strictly typed models and fetch clients that perfectly map to the backend DTOs.
 
 ---
 
 ## Architecture & Technologies
 
-The application is structured into five layers based on Clean Architecture:
-
+### Backend Tech Stack
+The backend is structured into five layers based on Clean Architecture:
 1. **Domain:** Entities, enumerations, and exceptions.
 2. **Application:** Business logic, DTOs, Validation, and Service interfaces.
 3. **Infrastructure:** External services, JWT token generation, and password hashing.
 4. **Persistence:** EF Core DbContext, Migrations, and Repositories.
 5. **API:** Controllers, Middleware, and Dependency Injection configurations.
 
-### Tech Stack
 - **Framework:** .NET 8, ASP.NET Core Web API
 - **Database:** Microsoft SQL Server, Entity Framework Core
 - **Libraries:** AutoMapper, FluentValidation, BCrypt
 - **Testing:** xUnit, Moq
 - **Documentation:** Swagger / OpenAPI
+
+### Frontend Tech Stack
+- **Framework:** React 18, Vite
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS, shadcn/ui, Lucide Icons
+- **State Management:** TanStack React Query
+- **Routing:** React Router DOM
+- **Localization:** i18next
 
 ---
 
@@ -40,8 +54,9 @@ The application is structured into five layers based on Clean Architecture:
 ### Prerequisites
 - [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
 - SQL Server (LocalDB or a dedicated instance)
+- [Node.js](https://nodejs.org/) (for the frontend)
 
-### Installation
+### 1. Backend Setup
 
 1. **Clone the repository**
    ```bash
@@ -57,29 +72,47 @@ The application is structured into five layers based on Clean Architecture:
    dotnet ef database update --project HospitalOrderSystem.Persistence --startup-project HospitalOrderSystem.API
    ```
 
-4. **Run the Application**
+4. **Run the API**
    ```bash
    dotnet run --project HospitalOrderSystem.API
    ```
+   Navigate to `https://localhost:<port>/swagger` to view the interactive API documentation.
 
-5. **Explore the API**
-   Navigate to `https://localhost:<port>/swagger` in your browser to view the interactive API documentation.
+### 2. Frontend Setup
+
+1. **Navigate to the frontend directory**
+   ```bash
+   cd ../hospital-order-frontend
+   ```
+
+2. **Install Dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Configure Environment Variables**
+   Ensure your `.env` file points to the running backend API URL (e.g., `VITE_API_BASE_URL=https://localhost:<port>`).
+
+4. **Run the Development Server**
+   ```bash
+   npm run dev
+   ```
+   Open the provided local URL (typically `http://localhost:5173`) in your browser.
 
 ---
 
-## Testing
+## Authentication Workflow
+
+The system requires JWT for protected endpoints. 
+- You can create an initial admin user via the `bootstrap-admin` endpoint if the database is empty.
+- Log in via the AuthController (or the frontend login page) to receive a Bearer token.
+- The frontend will automatically attach this token to subsequent requests using the custom `fetch-client`.
+
+## Testing (Backend)
 
 The solution includes a testing project for controller logic, validation, and exception handling.
 
-To run the tests:
+To run the backend tests:
 ```bash
 dotnet test
 ```
-
----
-
-## Authentication
-
-The API requires JWT for protected endpoints. 
-- Log in via the `AuthController` to receive a Bearer token.
-- Provide the token in the format: `Bearer <your_token>` via the Authorization header or the Swagger UI.
