@@ -16,6 +16,7 @@ namespace HospitalOrderSystem.Persistence.Repositories
         public async Task<List<Order>> GetAllAsync()
         {
             return await _context.Orders
+                .Include(order => order.Patient)
                 .Where(order => !order.IsDeleted)
                 .ToListAsync();
         }
@@ -23,6 +24,7 @@ namespace HospitalOrderSystem.Persistence.Repositories
         public async Task<Order?> GetByIdAsync(int id)
         {
             return await _context.Orders
+                .Include(order => order.Patient)
                 .FirstOrDefaultAsync(order => order.Id == id && !order.IsDeleted);
         }
 

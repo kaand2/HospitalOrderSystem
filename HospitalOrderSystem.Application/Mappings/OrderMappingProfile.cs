@@ -8,7 +8,10 @@ namespace HospitalOrderSystem.Application.Mappings
     {
         public OrderMappingProfile()
         {
-            CreateMap<Order, OrderDto>();
+            CreateMap<Order, OrderDto>()
+                .ForMember(dest => dest.PatientFirstName, opt => opt.MapFrom(src => src.Patient != null ? src.Patient.FirstName : null))
+                .ForMember(dest => dest.PatientLastName, opt => opt.MapFrom(src => src.Patient != null ? src.Patient.LastName : null))
+                .ForMember(dest => dest.PatientTcNo, opt => opt.MapFrom(src => src.Patient != null ? src.Patient.TcNo : null));
 
             CreateMap<CreateOrderDto, Order>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())

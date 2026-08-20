@@ -6,6 +6,9 @@ namespace HospitalOrderSystem.Application.DTOs.Orders
     {
         public int Id { get; set; }
         public int PatientId { get; set; }
+        public string? PatientFirstName { get; set; }
+        public string? PatientLastName { get; set; }
+        public string? PatientTcNo { get; set; }
         public int CreatedByUserId { get; set; }
         public OrderType OrderType { get; set; }
         public OrderStatus Status { get; set; }

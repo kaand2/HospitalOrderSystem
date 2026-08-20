@@ -196,7 +196,7 @@ namespace HospitalOrderSystem.Application.Services
                 OrderStatus.Paused => to == OrderStatus.Restarted || to == OrderStatus.Cancelled,
                 OrderStatus.Restarted => to == OrderStatus.Active,
                 OrderStatus.Completed => false,
-                OrderStatus.Cancelled => false,
+                OrderStatus.Cancelled => to == OrderStatus.Restarted,
                 _ => false
             };
 
