@@ -69,6 +69,37 @@ namespace HospitalOrderSystem.Application.Services
             return _mapper.Map<List<OrderDto>>(filteredOrders);
         }
 
+        public async Task<List<string>> GetAvailableTimeSlotsAsync(int doctorId, DateTime date)
+        {
+            var orders = await _orderRepository.GetByDoctorAndDateAsync(doctorId, date);
+            
+            var timeSlots = new List<string>();
+            var startTime = new TimeSpan(9, 0, 0); 
+            var endTime = new TimeSpan(17, 0, 0); 
+            var interval = TimeSpan.FromMinutes(15);
+            
+            for (var time = startTime; time < endTime; time += interval)
+            {
+                var slotStart = date.Date + time;
+                var slotEnd = slotStart + interval;
+                
+                bool isAvailable = !orders.Any(o => 
+                {
+                    if (!o.StartDate.HasValue) return false;
+                    var orderStart = o.StartDate.Value;
+                    var orderEnd = o.EndDate ?? orderStart.AddMinutes(15);
+                    return orderStart < slotEnd && orderEnd > slotStart;
+                });
+                
+                if (isAvailable && slotStart > DateTime.UtcNow)
+                {
+                    timeSlots.Add(time.ToString(@"hh\:mm"));
+                }
+            }
+            
+            return timeSlots;
+        }
+
         public async Task<OrderDto> CreateAsync(int createdByUserId, CreateOrderDto createOrderDto)
         {
             Patient? patient = null;

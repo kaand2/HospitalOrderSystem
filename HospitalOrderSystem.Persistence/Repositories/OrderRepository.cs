@@ -63,6 +63,16 @@ namespace HospitalOrderSystem.Persistence.Repositories
             return await query.ToListAsync();
         }
 
+        public async Task<List<Order>> GetByDoctorAndDateAsync(int doctorId, DateTime date)
+        {
+            return await _context.Orders
+                .Where(order => !order.IsDeleted && 
+                                order.CreatedByUserId == doctorId && 
+                                order.StartDate.HasValue && 
+                                order.StartDate.Value.Date == date.Date)
+                .ToListAsync();
+        }
+
         public async Task AddAsync(Order order)
         {
             await _context.Orders.AddAsync(order);

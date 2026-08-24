@@ -13,6 +13,7 @@ namespace HospitalOrderSystem.Application.Interfaces.Services
             string? patientTcNo,
             string? doctorFirstName,
             string? doctorLastName);
+        Task<List<string>> GetAvailableTimeSlotsAsync(int doctorId, DateTime date);
         Task<OrderDto> CreateAsync(int createdByUserId, CreateOrderDto createOrderDto);
         Task<OrderDto> UpdateAsync(int id, UpdateOrderDto updateOrderDto);
         Task<OrderDto> CancelAsync(int id, CancelOrderDto cancelOrderDto);

@@ -12,6 +12,7 @@ namespace HospitalOrderSystem.Application.Interfaces.Repositories
             string? patientTcNo,
             string? doctorFirstName,
             string? doctorLastName);
+        Task<List<Order>> GetByDoctorAndDateAsync(int doctorId, DateTime date);
         Task AddAsync(Order order);
         void Update(Order order);
         void Delete(Order order);
