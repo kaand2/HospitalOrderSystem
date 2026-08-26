@@ -24,9 +24,10 @@ namespace HospitalOrderSystem.Application
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IOrderActionService, OrderActionService>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IAppointmentService, AppointmentService>();
             services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
             services.AddValidatorsFromAssemblyContaining<CreatePatientDtoValidator>();
-            services.AddAutoMapper(configuration => { }, typeof(PatientMappingProfile), typeof(UserMappingProfile), typeof(OrderMappingProfile), typeof(OrderActionMappingProfile));
+            services.AddAutoMapper(configuration => { }, typeof(PatientMappingProfile), typeof(UserMappingProfile), typeof(OrderMappingProfile), typeof(OrderActionMappingProfile), typeof(AppointmentMappingProfile));
             return services;
         }
     }

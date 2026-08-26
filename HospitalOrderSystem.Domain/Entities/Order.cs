@@ -9,6 +9,7 @@ namespace HospitalOrderSystem.Domain.Entities
         public int Id { get; set; }
         public int PatientId { get; set; }
         public int CreatedByUserId { get; set; }
+        public int? AppointmentId { get; set; }
         public OrderType OrderType { get; set; }
         public OrderStatus Status { get; set; }
         public string Title { get; set; } = string.Empty;
@@ -24,6 +25,7 @@ namespace HospitalOrderSystem.Domain.Entities
         public bool IsDeleted { get; set; } = false;
         public Patient Patient { get; set; } = null!;
         public User CreatedByUser { get; set; } = null!;
+        public Appointment? Appointment { get; set; }
         public ICollection<OrderAction> Actions { get; set; } = new List<OrderAction>();
     }
 }

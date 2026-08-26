@@ -42,6 +42,16 @@ namespace HospitalOrderSystem.Application.Services
             List<User> users = await _userRepository.SearchAsync(firstName, lastName);
             return _mapper.Map<List<UserDto>>(users);
         }
+        public async Task<List<UserDto>> GetDoctorsAsync()
+        {
+            List<User> doctors = await _userRepository.GetDoctorsAsync();
+            return _mapper.Map<List<UserDto>>(doctors);
+        }
+        public async Task<List<UserDto>> SearchDoctorsAsync(string? firstName, string? lastName)
+        {
+            List<User> doctors = await _userRepository.SearchDoctorsAsync(firstName, lastName);
+            return _mapper.Map<List<UserDto>>(doctors);
+        }
         public async Task<UserDto> CreateAsync(CreateUserDto createUserDto)
         {
             string normalizedUsername = createUserDto.Username.Trim();

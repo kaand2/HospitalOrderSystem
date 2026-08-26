@@ -12,6 +12,8 @@ namespace HospitalOrderSystem.Application.Interfaces.Services
         Task<List<UserDto>> GetAllAsync();
         Task<UserDto> GetByIdAsync(int id);
         Task<List<UserDto>> SearchAsync(string? firstName, string? lastName);
+        Task<List<UserDto>> GetDoctorsAsync();
+        Task<List<UserDto>> SearchDoctorsAsync(string? firstName, string? lastName);
         Task<UserDto> CreateAsync(CreateUserDto createUserDto);
         Task<UserDto> UpdateAsync(int id, UpdateUserDto updateUserDto);
         Task DeleteAsync(int id);

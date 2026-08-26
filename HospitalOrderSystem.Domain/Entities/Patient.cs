@@ -31,5 +31,6 @@ namespace HospitalOrderSystem.Domain.Entities
         public bool IsDeleted { get; set; } = false;
         public DateTime? DeletedDate { get; set; }
         public ICollection<Order> Orders { get; set; } = new List<Order>();
+        public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
     }
 }

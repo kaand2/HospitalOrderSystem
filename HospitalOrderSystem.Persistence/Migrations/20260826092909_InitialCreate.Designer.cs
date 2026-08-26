@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HospitalOrderSystem.Persistence.Migrations
 {
     [DbContext(typeof(ProjectDbContext))]
-    [Migration("20260824063544_InitialCreate")]
+    [Migration("20260826092909_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -25,6 +25,62 @@ namespace HospitalOrderSystem.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("HospitalOrderSystem.Domain.Entities.Appointment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("AppointmentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CancellationReason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CancelledDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DoctorId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsCancelled")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PatientId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Reason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("Appointments");
+                });
+
             modelBuilder.Entity("HospitalOrderSystem.Domain.Entities.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -32,6 +88,9 @@ namespace HospitalOrderSystem.Persistence.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("AppointmentId")
+                        .HasColumnType("int");
 
                     b.Property<string>("CancellationReason")
                         .HasColumnType("nvarchar(max)");
@@ -80,6 +139,8 @@ namespace HospitalOrderSystem.Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AppointmentId");
 
                     b.HasIndex("CreatedByUserId");
 
@@ -235,8 +296,32 @@ namespace HospitalOrderSystem.Persistence.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("HospitalOrderSystem.Domain.Entities.Appointment", b =>
+                {
+                    b.HasOne("HospitalOrderSystem.Domain.Entities.User", "Doctor")
+                        .WithMany("Appointments")
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("HospitalOrderSystem.Domain.Entities.Patient", "Patient")
+                        .WithMany("Appointments")
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Doctor");
+
+                    b.Navigation("Patient");
+                });
+
             modelBuilder.Entity("HospitalOrderSystem.Domain.Entities.Order", b =>
                 {
+                    b.HasOne("HospitalOrderSystem.Domain.Entities.Appointment", "Appointment")
+                        .WithMany("Orders")
+                        .HasForeignKey("AppointmentId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
                     b.HasOne("HospitalOrderSystem.Domain.Entities.User", "CreatedByUser")
                         .WithMany("CreatedOrders")
                         .HasForeignKey("CreatedByUserId")
@@ -248,6 +333,8 @@ namespace HospitalOrderSystem.Persistence.Migrations
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.Navigation("Appointment");
 
                     b.Navigation("CreatedByUser");
 
@@ -273,6 +360,11 @@ namespace HospitalOrderSystem.Persistence.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("HospitalOrderSystem.Domain.Entities.Appointment", b =>
+                {
+                    b.Navigation("Orders");
+                });
+
             modelBuilder.Entity("HospitalOrderSystem.Domain.Entities.Order", b =>
                 {
                     b.Navigation("Actions");
@@ -280,12 +372,16 @@ namespace HospitalOrderSystem.Persistence.Migrations
 
             modelBuilder.Entity("HospitalOrderSystem.Domain.Entities.Patient", b =>
                 {
+                    b.Navigation("Appointments");
+
                     b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("HospitalOrderSystem.Domain.Entities.User", b =>
                 {
                     b.Navigation("Actions");
+
+                    b.Navigation("Appointments");
 
                     b.Navigation("CreatedOrders");
                 });

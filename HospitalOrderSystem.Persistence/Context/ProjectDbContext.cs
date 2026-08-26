@@ -10,6 +10,7 @@ public class ProjectDbContext : DbContext
     public DbSet<User> Users { get; set; } = null!;
     public DbSet<Order> Orders { get; set; } = null!;
     public DbSet<OrderAction> OrderActions { get; set; } = null!;
+    public DbSet<Appointment> Appointments { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -65,6 +66,26 @@ public class ProjectDbContext : DbContext
             entity.HasOne(order => order.CreatedByUser)
                 .WithMany(user => user.CreatedOrders)
                 .HasForeignKey(order => order.CreatedByUserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            entity.HasOne(order => order.Appointment)
+                .WithMany(appointment => appointment.Orders)
+                .HasForeignKey(order => order.AppointmentId)
+                .OnDelete(DeleteBehavior.NoAction);
+        });
+
+        modelBuilder.Entity<Appointment>(entity =>
+        {
+            entity.HasKey(a => a.Id);
+
+            entity.HasOne(a => a.Patient)
+                .WithMany(patient => patient.Appointments)
+                .HasForeignKey(a => a.PatientId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            entity.HasOne(a => a.Doctor)
+                .WithMany(user => user.Appointments)
+                .HasForeignKey(a => a.DoctorId)
                 .OnDelete(DeleteBehavior.NoAction);
         });
 

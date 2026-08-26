@@ -60,14 +60,6 @@ namespace HospitalOrderSystem.API.Controllers
             return Ok(orders);
         }
 
-        [HttpGet("available-time-slots")]
-        public async Task<ActionResult<List<string>>> GetAvailableTimeSlots(
-            [FromQuery] int doctorId,
-            [FromQuery] DateTime date)
-        {
-            List<string> timeSlots = await _orderService.GetAvailableTimeSlotsAsync(doctorId, date);
-            return Ok(timeSlots);
-        }
 
         [HttpPost]
         [Authorize(Roles = "Doctor,Admin")]

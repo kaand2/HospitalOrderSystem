@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HospitalOrderSystem.API", "HospitalOrderSystem.API\HospitalOrderSystem.API.csproj", "{ED806B2D-CF9E-4089-802D-9E0701D87316}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HospitalOrderSystem.Application", "HospitalOrderSystem.Application\HospitalOrderSystem.Application.csproj", "{FE651161-73E0-4D03-B0B8-3AE002501E38}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HospitalOrderSystem.Domain", "HospitalOrderSystem.Domain\HospitalOrderSystem.Domain.csproj", "{BFE69676-69B0-4FCF-88E6-4CB4CC06F506}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HospitalOrderSystem.Infrastructure", "HospitalOrderSystem.Infrastructure\HospitalOrderSystem.Infrastructure.csproj", "{3E9653E4-A73A-46E2-ADE4-0D8C4AB69E83}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HospitalOrderSystem.Persistence", "HospitalOrderSystem.Persistence\HospitalOrderSystem.Persistence.csproj", "{F60D737D-3140-4C22-A5CA-11A6735578D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HospitalOrderSystem.Tests", "HospitalOrderSystem.Tests\HospitalOrderSystem.Tests.csproj", "{42A0145A-8095-4370-8E8E-5D6DF70798EF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ED806B2D-CF9E-4089-802D-9E0701D87316}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED806B2D-CF9E-4089-802D-9E0701D87316}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED806B2D-CF9E-4089-802D-9E0701D87316}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED806B2D-CF9E-4089-802D-9E0701D87316}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE651161-73E0-4D03-B0B8-3AE002501E38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE651161-73E0-4D03-B0B8-3AE002501E38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE651161-73E0-4D03-B0B8-3AE002501E38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE651161-73E0-4D03-B0B8-3AE002501E38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFE69676-69B0-4FCF-88E6-4CB4CC06F506}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFE69676-69B0-4FCF-88E6-4CB4CC06F506}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFE69676-69B0-4FCF-88E6-4CB4CC06F506}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFE69676-69B0-4FCF-88E6-4CB4CC06F506}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E9653E4-A73A-46E2-ADE4-0D8C4AB69E83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E9653E4-A73A-46E2-ADE4-0D8C4AB69E83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E9653E4-A73A-46E2-ADE4-0D8C4AB69E83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E9653E4-A73A-46E2-ADE4-0D8C4AB69E83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F60D737D-3140-4C22-A5CA-11A6735578D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F60D737D-3140-4C22-A5CA-11A6735578D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F60D737D-3140-4C22-A5CA-11A6735578D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F60D737D-3140-4C22-A5CA-11A6735578D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42A0145A-8095-4370-8E8E-5D6DF70798EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42A0145A-8095-4370-8E8E-5D6DF70798EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42A0145A-8095-4370-8E8E-5D6DF70798EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42A0145A-8095-4370-8E8E-5D6DF70798EF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

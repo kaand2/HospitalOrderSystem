@@ -47,7 +47,7 @@ namespace HospitalOrderSystem.Application.Services
             return _mapper.Map<OrderActionDto>(action);
         }
 
-        public async Task<OrderActionDto> CreateAsync(CreateOrderActionDto createDto)
+        public async Task<OrderActionDto> CreateAsync(int userId, string userRole, CreateOrderActionDto createDto)
         {
             Order? order = await _orderRepository.GetByIdAsync(createDto.OrderId);
             if (order is null)
@@ -55,25 +55,36 @@ namespace HospitalOrderSystem.Application.Services
                 throw new KeyNotFoundException($"Id değeri {createDto.OrderId} olan order bulunamadı.");
             }
 
-            User? user = await _userRepository.GetByIdAsync(createDto.UserId);
+            if (!OrderService.IsAuthorizedForOrderType(userRole, order.OrderType))
+            {
+                throw new UnauthorizedAccessException("Bu order türünde işlem yapma yetkiniz yok.");
+            }
+            User? user = await _userRepository.GetByIdAsync(userId);
             if (user is null)
             {
-                throw new KeyNotFoundException($"Id değeri {createDto.UserId} olan kullanıcı bulunamadı.");
+                throw new KeyNotFoundException($"Id değeri {userId} olan kullanıcı bulunamadı.");
+            }
+
+            if (createDto.NewStatus.HasValue && createDto.NewStatus.Value != order.Status)
+            {
+                OrderService.ValidateStatusTransition(order.Status, createDto.NewStatus.Value);
             }
 
             OrderAction action = _mapper.Map<OrderAction>(createDto);
+            action.UserId = userId;
             action.ActionDate = DateTime.UtcNow;
             action.PreviousStatus = order.Status;
 
             await _orderActionRepository.AddAsync(action);
-            await _orderActionRepository.SaveChangesAsync();
 
             if (createDto.NewStatus.HasValue && createDto.NewStatus.Value != order.Status)
             {
                 order.Status = createDto.NewStatus.Value;
                 _orderRepository.Update(order);
-                await _orderRepository.SaveChangesAsync();
             }
+
+            // Tek bir işlemde hem action hem de order değişikliklerini kaydet
+            await _orderActionRepository.SaveChangesAsync();
 
             return _mapper.Map<OrderActionDto>(action);
         }

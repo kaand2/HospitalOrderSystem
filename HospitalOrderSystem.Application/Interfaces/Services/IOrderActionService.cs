@@ -7,6 +7,6 @@ namespace HospitalOrderSystem.Application.Interfaces.Services
         Task<List<OrderActionDto>> GetAllAsync();
         Task<List<OrderActionDto>> GetByOrderIdAsync(int orderId);
         Task<OrderActionDto> GetByIdAsync(int id);
-        Task<OrderActionDto> CreateAsync(CreateOrderActionDto createDto);
+        Task<OrderActionDto> CreateAsync(int userId, string userRole, CreateOrderActionDto createDto);
     }
 }

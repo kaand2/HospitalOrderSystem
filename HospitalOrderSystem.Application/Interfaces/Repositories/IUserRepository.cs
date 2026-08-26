@@ -13,6 +13,8 @@ namespace HospitalOrderSystem.Application.Interfaces.Repositories
         Task<User?> GetByIdAsync(int id);
         Task<User?> GetByUsernameAsync(string username);
         Task<List<User>> SearchAsync(string? firstName, string? lastName);
+        Task<List<User>> GetDoctorsAsync();
+        Task<List<User>> SearchDoctorsAsync(string? firstName, string? lastName);
         Task<bool> UsernameExistsAsync(string username, int? excludedUserId = null);
         Task AddAsync(User user);
         void Update(User user);

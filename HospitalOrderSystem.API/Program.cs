@@ -59,6 +59,7 @@ builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderActionRepository, OrderActionRepository>();
+builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
 builder.Services.AddApplicationServices();
 
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();

@@ -11,10 +11,6 @@ namespace HospitalOrderSystem.Application.Validators.OrderActions
                 .GreaterThan(0)
                 .WithMessage("Geçerli bir order seçilmelidir.");
 
-            RuleFor(action => action.UserId)
-                .GreaterThan(0)
-                .WithMessage("Geçerli bir kullanıcı olmalıdır.");
-
             RuleFor(action => action.ActionType)
                 .IsInEnum()
                 .WithMessage("Geçerli bir işlem türü seçilmelidir.");

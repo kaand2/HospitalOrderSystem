@@ -43,7 +43,7 @@ namespace HospitalOrderSystem.API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin,Doctor")]
+        [Authorize(Roles = "Admin,Doctor,Nurse,Laboratory,Radiology")]
         public async Task<ActionResult<OrderActionDto>> Create(
             [FromBody] CreateOrderActionDto createDto)
         {
@@ -64,8 +64,16 @@ namespace HospitalOrderSystem.API.Controllers
                     errors
                 });
             }
+            int userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "0");
+            string userRole = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value ?? string.Empty;
+
+            if (userId == 0)
+            {
+                return Unauthorized();
+            }
+
             OrderActionDto createdAction =
-                await _orderActionService.CreateAsync(createDto);
+                await _orderActionService.CreateAsync(userId, userRole, createDto);
 
             return CreatedAtAction(
                 nameof(GetById),

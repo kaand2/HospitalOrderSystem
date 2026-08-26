@@ -16,5 +16,6 @@ namespace HospitalOrderSystem.Domain.Entities
         public DateTime? DeletedDate { get; set; }
         public ICollection<Order> CreatedOrders { get; set; } = new List<Order>();
         public ICollection<OrderAction> Actions { get; set; } = new List<OrderAction>();
+        public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
     }
 }
