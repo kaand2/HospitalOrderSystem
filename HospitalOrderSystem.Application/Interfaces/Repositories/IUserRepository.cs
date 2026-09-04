@@ -9,7 +9,7 @@ namespace HospitalOrderSystem.Application.Interfaces.Repositories
 {
     public interface IUserRepository
     {
-        Task<List<User>> GetAllAsync();
+        Task<List<User>> GetAllAsync(int? role = null);
         Task<User?> GetByIdAsync(int id);
         Task<User?> GetByUsernameAsync(string username);
         Task<List<User>> SearchAsync(string? firstName, string? lastName);

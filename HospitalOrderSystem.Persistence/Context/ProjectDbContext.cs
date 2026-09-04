@@ -52,6 +52,11 @@ public class ProjectDbContext : DbContext
 
             entity.Property(user => user.LastName)
                 .IsRequired();
+
+            entity.HasOne(user => user.CurrentOrder)
+                .WithMany(order => order.AssignedUsers)
+                .HasForeignKey(user => user.CurrentOrderId)
+                .OnDelete(DeleteBehavior.SetNull);
         });
 
         modelBuilder.Entity<Order>(entity =>

@@ -99,7 +99,7 @@ namespace HospitalOrderSystem.API.Controllers
                 createdOrder);
         }
 
-        [Authorize(Roles = "Doctor,Admin")]
+        [Authorize(Roles = "Doctor,Admin,Nurse,Laboratory,Radiology")]
         [HttpPut("{id:int}")]
         public async Task<ActionResult<OrderDto>> Update(
             int id,
@@ -127,6 +127,17 @@ namespace HospitalOrderSystem.API.Controllers
                     id,
                     updateOrderDto);
 
+            return Ok(updatedOrder);
+        }
+
+        [Authorize(Roles = "Doctor,Admin")]
+        [HttpPost("{id:int}/assign")]
+        public async Task<ActionResult<OrderDto>> Assign(
+            int id,
+            [FromBody] AssignOrderDto assignOrderDto)
+        {
+            var userRole = User.FindFirst(ClaimTypes.Role)?.Value ?? string.Empty;
+            OrderDto updatedOrder = await _orderService.AssignUserAsync(id, assignOrderDto, userRole);
             return Ok(updatedOrder);
         }
 

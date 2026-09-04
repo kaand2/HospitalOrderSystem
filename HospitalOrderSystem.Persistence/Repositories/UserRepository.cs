@@ -17,11 +17,16 @@ public class UserRepository : IUserRepository
     {
         _context = context;
     }
-    public async Task<List<User>> GetAllAsync()
+    public async Task<List<User>> GetAllAsync(int? role = null)
     {
-        return await _context.Users
-            .Where(user => !user.IsDeleted)
-            .ToListAsync();
+        var query = _context.Users.Where(user => !user.IsDeleted);
+
+        if (role.HasValue)
+        {
+            query = query.Where(user => (int)user.Role == role.Value);
+        }
+
+        return await query.ToListAsync();
     }
     public async Task<User?> GetByIdAsync(int id)
     {

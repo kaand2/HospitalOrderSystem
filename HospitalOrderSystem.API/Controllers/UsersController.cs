@@ -23,10 +23,10 @@ namespace HospitalOrderSystem.API.Controllers
             _updateUserValidator = updateUserValidator;
         }
         [HttpGet]
-        public async Task<ActionResult<List<UserDto>>> GetAll()
+        public async Task<ActionResult<List<UserDto>>> GetAll([FromQuery] int? role = null)
         {
             List<UserDto> users =
-                await _userService.GetAllAsync();
+                await _userService.GetAllAsync(role);
 
             return Ok(users);
         }

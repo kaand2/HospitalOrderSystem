@@ -15,6 +15,7 @@ namespace HospitalOrderSystem.Application.Interfaces.Services
             string? doctorLastName);
         Task<OrderDto> CreateAsync(int createdByUserId, CreateOrderDto createOrderDto);
         Task<OrderDto> UpdateAsync(int id, UpdateOrderDto updateOrderDto);
+        Task<OrderDto> AssignUserAsync(int orderId, AssignOrderDto assignDto, string userRole);
         Task<OrderDto> CancelAsync(int id, CancelOrderDto cancelOrderDto);
         Task DeleteAsync(int id);
     }

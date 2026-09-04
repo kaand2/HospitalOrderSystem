@@ -17,5 +17,7 @@ namespace HospitalOrderSystem.Domain.Entities
         public ICollection<Order> CreatedOrders { get; set; } = new List<Order>();
         public ICollection<OrderAction> Actions { get; set; } = new List<OrderAction>();
         public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
+        public int? CurrentOrderId { get; set; }
+        public Order? CurrentOrder { get; set; }
     }
 }

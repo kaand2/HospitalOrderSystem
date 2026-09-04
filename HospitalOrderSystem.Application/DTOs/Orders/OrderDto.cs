@@ -19,5 +19,6 @@ namespace HospitalOrderSystem.Application.DTOs.Orders
         public DateTime CreatedDate { get; set; }
         public DateTime? CompletedDate { get; set; }
         public string? CancellationReason { get; set; }
+        public List<HospitalOrderSystem.Application.DTOs.Users.UserDto> AssignedUsers { get; set; } = new();
     }
 }

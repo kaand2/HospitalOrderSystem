@@ -9,7 +9,7 @@ namespace HospitalOrderSystem.Application.Interfaces.Services
 {
     public interface IUserService
     {
-        Task<List<UserDto>> GetAllAsync();
+        Task<List<UserDto>> GetAllAsync(int? role = null);
         Task<UserDto> GetByIdAsync(int id);
         Task<List<UserDto>> SearchAsync(string? firstName, string? lastName);
         Task<List<UserDto>> GetDoctorsAsync();

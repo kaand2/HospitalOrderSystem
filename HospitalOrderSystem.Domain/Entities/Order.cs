@@ -27,5 +27,6 @@ namespace HospitalOrderSystem.Domain.Entities
         public User CreatedByUser { get; set; } = null!;
         public Appointment? Appointment { get; set; }
         public ICollection<OrderAction> Actions { get; set; } = new List<OrderAction>();
+        public ICollection<User> AssignedUsers { get; set; } = new List<User>();
     }
 }

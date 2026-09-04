@@ -23,9 +23,9 @@ namespace HospitalOrderSystem.Application.Services
             _mapper = mapper;
             _passwordHasher = passwordHasher;
         }
-        public async Task<List<UserDto>> GetAllAsync()
+        public async Task<List<UserDto>> GetAllAsync(int? role = null)
         {
-            List<User> users = await _userRepository.GetAllAsync();
+            List<User> users = await _userRepository.GetAllAsync(role);
             return _mapper.Map<List<UserDto>>(users);
         }
         public async Task<UserDto> GetByIdAsync(int id)

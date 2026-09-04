@@ -153,6 +153,38 @@ namespace HospitalOrderSystem.Application.Services
             return _mapper.Map<OrderDto>(order);
         }
 
+        public async Task<OrderDto> AssignUserAsync(int orderId, AssignOrderDto assignDto, string userRole)
+        {
+            if (userRole != "Admin" && userRole != "Doctor")
+            {
+                throw new UnauthorizedAccessException("Sadece Admin ve Doktorlar atama yapabilir.");
+            }
+
+            Order? order = await _orderRepository.GetByIdAsync(orderId);
+            if (order is null)
+            {
+                throw new KeyNotFoundException($"Id değeri {orderId} olan order bulunamadı.");
+            }
+
+            User? userToAssign = await _userRepository.GetByIdAsync(assignDto.UserId);
+            if (userToAssign is null)
+            {
+                throw new KeyNotFoundException($"Id değeri {assignDto.UserId} olan kullanıcı bulunamadı.");
+            }
+
+            if (!IsAuthorizedForOrderType(userToAssign.Role.ToString(), order.OrderType))
+            {
+                throw new InvalidOperationException("Belirtilen kullanıcı bu sipariş türü üzerinde çalışamaz.");
+            }
+
+            userToAssign.CurrentOrderId = orderId;
+            _userRepository.Update(userToAssign);
+            await _userRepository.SaveChangesAsync();
+
+            order = await _orderRepository.GetByIdAsync(orderId);
+            return _mapper.Map<OrderDto>(order);
+        }
+
         public async Task<OrderDto> CancelAsync(int id, CancelOrderDto cancelOrderDto)
         {
             Order? order = await _orderRepository.GetByIdAsync(id);
@@ -217,7 +249,7 @@ namespace HospitalOrderSystem.Application.Services
 
             if (userRole == "Nurse")
             {
-                return orderType == OrderType.Nursing || orderType == OrderType.Medication || orderType == OrderType.Diet;
+                return orderType == OrderType.Nursing;
             }
 
             if (userRole == "Laboratory")

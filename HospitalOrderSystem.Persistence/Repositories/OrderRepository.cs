@@ -17,6 +17,7 @@ namespace HospitalOrderSystem.Persistence.Repositories
         {
             return await _context.Orders
                 .Include(order => order.Patient)
+                .Include(order => order.AssignedUsers)
                 .Where(order => !order.IsDeleted)
                 .ToListAsync();
         }
@@ -25,6 +26,7 @@ namespace HospitalOrderSystem.Persistence.Repositories
         {
             return await _context.Orders
                 .Include(order => order.Patient)
+                .Include(order => order.AssignedUsers)
                 .FirstOrDefaultAsync(order => order.Id == id && !order.IsDeleted);
         }
 
@@ -38,6 +40,7 @@ namespace HospitalOrderSystem.Persistence.Repositories
             var query = _context.Orders
                 .Include(order => order.Patient)
                 .Include(order => order.CreatedByUser)
+                .Include(order => order.AssignedUsers)
                 .Where(order => !order.IsDeleted);
 
             if (!string.IsNullOrWhiteSpace(patientFirstName))

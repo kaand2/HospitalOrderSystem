@@ -10,5 +10,6 @@ namespace HospitalOrderSystem.Application.DTOs.Users
         public string LastName { get; set; } = string.Empty;
         public UserRole Role { get; set; }
         public DateTime CreatedDate { get; set; }
+        public int? CurrentOrderId { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using HospitalOrderSystem.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HospitalOrderSystem.Persistence.Migrations
 {
     [DbContext(typeof(ProjectDbContext))]
-    partial class ProjectDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260902231521_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -257,9 +260,6 @@ namespace HospitalOrderSystem.Persistence.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("CurrentOrderId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2");
 
@@ -289,8 +289,6 @@ namespace HospitalOrderSystem.Persistence.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CurrentOrderId");
 
                     b.HasIndex("Username")
                         .IsUnique();
@@ -362,16 +360,6 @@ namespace HospitalOrderSystem.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("HospitalOrderSystem.Domain.Entities.User", b =>
-                {
-                    b.HasOne("HospitalOrderSystem.Domain.Entities.Order", "CurrentOrder")
-                        .WithMany("AssignedUsers")
-                        .HasForeignKey("CurrentOrderId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.Navigation("CurrentOrder");
-                });
-
             modelBuilder.Entity("HospitalOrderSystem.Domain.Entities.Appointment", b =>
                 {
                     b.Navigation("Orders");
@@ -380,8 +368,6 @@ namespace HospitalOrderSystem.Persistence.Migrations
             modelBuilder.Entity("HospitalOrderSystem.Domain.Entities.Order", b =>
                 {
                     b.Navigation("Actions");
-
-                    b.Navigation("AssignedUsers");
                 });
 
             modelBuilder.Entity("HospitalOrderSystem.Domain.Entities.Patient", b =>
